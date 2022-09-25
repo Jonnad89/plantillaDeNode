@@ -58,6 +58,23 @@ const protectUsersAccount = (req, res, next) => {
   //if the ids match, grant access
   next()
 }
+//Create middleware to protect posts, only owners should be able to uptdate/delete
+const protectPostOwners = (req, res, next) => {
+  const { sessionUser, post } = req
+  if (sessionUser.id !== post.userId) {
+    return next(new AppError('This post doesnt belong to you', 403))
+  }
+  next()
+}
+
+//Create middleware to protect comments, only owners should be able to uptdate/delete
+const protectCommentsOwners = (req, res, next) => {
+  const { sessionUser, comment } = req;
+  if (sessionUser.id !== comment.id) {
+    return next(new AppError('This comment doesnt belong to you', 403))
+  }
+  next();
+}
 
 //Create middleware that only grants access to admin users
 
@@ -71,5 +88,7 @@ const adminAccess = (req, res, next) => {
 module.exports = {
   protectSession,
   protectUsersAccount,
+  protectPostOwners,
+  protectCommentsOwners,
   adminAccess
 }

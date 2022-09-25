@@ -3,7 +3,8 @@ const express = require('express');
 
 const { usersRouter } = require('./routes/users.routes')
 
-const { globalErrorHandler } = require('./controllers/error.controller')
+const { globalErrorHandler } = require('./controllers/error.controller');
+const { postRouter } = require('./routes/post.routes');
 
 //* init our Express
 const app = express();
@@ -11,6 +12,7 @@ const app = express();
 app.use(express.json()); //* Middleware 
 //Define endpoints
 app.use('/api/v1/users', usersRouter);//exportado de users.routes
+app.use('/api/v1/posts', postRouter)
 
 //Global error handler
 app.use(globalErrorHandler)
